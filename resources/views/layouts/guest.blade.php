@@ -7,6 +7,12 @@
 
     <title>{{ config('app.name', 'BookMark') }}</title>
 
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -15,11 +21,11 @@
 </head>
 <body class="font-sans antialiased bg-autumn-bg text-autumn-ink min-h-screen flex flex-col">
 
-    <header class="bg-autumn-card border-b border-autumn-border shadow-warm">
+    <header class="bg-autumn-green-d text-autumn-bg border-b-4 border-autumn-gold shadow-warm-lg">
         <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 text-xl font-serif font-bold text-autumn-green hover:text-autumn-green-d transition">
-                <span class="text-2xl">BM</span>
-                <span>BookMark</span>
+            <a href="/" class="flex items-center gap-2 text-xl font-serif font-bold hover:opacity-90 transition">
+                <span class="text-2xl text-autumn-gold-l">BM</span>
+                <span class="text-autumn-bg">BookMark</span>
             </a>
         </div>
     </header>

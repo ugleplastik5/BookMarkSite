@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BookMark — твоя личная библиотека</title>
 
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,20 +19,20 @@
 </head>
 <body class="font-sans antialiased bg-autumn-bg text-autumn-ink min-h-screen flex flex-col">
 
-    <header class="bg-autumn-card border-b border-autumn-border shadow-warm">
+    <header class="bg-autumn-green-d text-autumn-bg border-b-4 border-autumn-gold shadow-warm-lg">
         <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-2 text-xl font-serif font-bold text-autumn-green">
-                <span class="text-2xl">BM</span>
-                <span>BookMark</span>
+            <a href="/" class="flex items-center gap-2 text-xl font-serif font-bold hover:opacity-90 transition">
+                <span class="text-2xl text-autumn-gold-l">BM</span>
+                <span class="text-autumn-bg">BookMark</span>
             </a>
 
             <nav class="flex items-center gap-3 text-sm">
                 <a href="{{ route('login') }}"
-                   class="px-3 py-1.5 text-autumn-ink hover:text-autumn-green transition font-medium">
+                   class="px-3 py-1.5 text-autumn-bg/90 hover:text-autumn-gold-l transition font-medium">
                     Вход
                 </a>
                 <a href="{{ route('register') }}"
-                   class="px-3 py-1.5 bg-autumn-green text-white rounded hover:bg-autumn-green-d transition font-semibold shadow-sm">
+                   class="px-3 py-1.5 bg-autumn-gold text-autumn-green-d rounded hover:bg-autumn-gold-l transition font-bold shadow-sm">
                     Регистрация
                 </a>
             </nav>
@@ -47,11 +53,11 @@
 
             <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
                 <a href="{{ route('register') }}"
-                   class="px-7 py-3.5 bg-autumn-green text-white rounded-lg hover:bg-autumn-green-d transition font-semibold shadow-warm hover:shadow-warm-lg">
+                   class="px-7 py-3.5 bg-autumn-green text-white rounded-lg hover:bg-autumn-green-d transition font-bold shadow-warm hover:shadow-warm-lg">
                     Начать читать
                 </a>
                 <a href="{{ route('login') }}"
-                   class="px-7 py-3.5 bg-autumn-card border border-autumn-border text-autumn-ink rounded-lg hover:border-autumn-gold hover:shadow-warm transition font-semibold">
+                   class="px-7 py-3.5 bg-autumn-card border border-autumn-border text-autumn-ink rounded-lg hover:border-autumn-gold hover:shadow-warm transition font-bold">
                     Войти
                 </a>
             </div>
@@ -87,8 +93,11 @@
         </div>
     </main>
 
-    <footer class="border-t border-autumn-border py-6 text-center text-sm text-autumn-muted">
-        BookMark &copy; {{ date('Y') }} — твоя личная библиотека
+    <footer class="bg-autumn-brown text-autumn-bg border-t-4 border-autumn-gold mt-12 sm:mt-16 py-6 text-center text-xs sm:text-sm px-4 shadow-warm-lg">
+        <p class="font-serif text-lg text-autumn-gold-l mb-1">
+            Book<span class="text-autumn-bg">Mark</span>
+        </p>
+        <p class="text-autumn-bg/80">&copy; {{ date('Y') }} — твоя личная библиотека</p>
     </footer>
 
 </body>
