@@ -8,32 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    /**
-     * Список книг текущего пользователя.
-     */
     public function index()
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $books = $user->books()
-            ->latest()
-            ->get();
+        $books = $user->books()->latest()->get();
 
         return view('books.index', compact('books'));
     }
 
-    /**
-     * Форма добавления книги.
-     */
     public function create()
     {
         return view('books.create');
     }
 
-    /**
-     * Сохранить новую книгу.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -52,20 +41,15 @@ class BookController extends Controller
     }
 
     /**
-     * Показать книгу.
+     * Показать книгу — можно любую, но редактировать только свои.
      */
     public function show(Book $book)
     {
-        $this->authorizeBook($book);
-
-        $book->load('reviews');
+        $book->load('reviews.user', 'user');
 
         return view('books.show', compact('book'));
     }
 
-    /**
-     * Форма редактирования.
-     */
     public function edit(Book $book)
     {
         $this->authorizeBook($book);
@@ -73,9 +57,6 @@ class BookController extends Controller
         return view('books.edit', compact('book'));
     }
 
-    /**
-     * Обновить книгу.
-     */
     public function update(Request $request, Book $book)
     {
         $this->authorizeBook($book);
@@ -87,7 +68,6 @@ class BookController extends Controller
             'current_page' => 'nullable|integer|min:0',
         ]);
 
-        // Если current_page больше total_pages — обрезаем
         if (isset($validated['total_pages'], $validated['current_page'])
             && $validated['current_page'] > $validated['total_pages']) {
             $validated['current_page'] = $validated['total_pages'];
@@ -100,9 +80,6 @@ class BookController extends Controller
             ->with('success', 'Книга обновлена');
     }
 
-    /**
-     * Удалить книгу.
-     */
     public function destroy(Book $book)
     {
         $this->authorizeBook($book);
@@ -114,9 +91,6 @@ class BookController extends Controller
             ->with('success', 'Книга удалена');
     }
 
-    /**
-     * Быстрая установка закладки: сохранить текущую страницу.
-     */
     public function bookmark(Request $request, Book $book)
     {
         $this->authorizeBook($book);
@@ -134,9 +108,6 @@ class BookController extends Controller
         return back()->with('success', "Закладка: страница {$book->current_page}");
     }
 
-    /**
-     * Проверка, что книга принадлежит текущему пользователю.
-     */
     private function authorizeBook(Book $book): void
     {
         if ($book->user_id !== Auth::id()) {
