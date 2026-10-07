@@ -23,4 +23,21 @@ class UserController extends Controller
 
         return view('users.index', compact('users'));
     }
+
+    /**
+     * Мои друзья (взаимные подписки).
+     */
+    public function friends()
+    {
+        /** @var \App\Models\User $me */
+        $me = Auth::user();
+
+        $friendIds = $me->friendIds();
+
+        $friends = User::whereIn('id', $friendIds)
+            ->orderBy('name')
+            ->paginate(20);
+
+        return view('users.friends', compact('friends'));
+    }
 }

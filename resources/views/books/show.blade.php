@@ -22,7 +22,6 @@
                     <p class="text-autumn-muted mt-1 text-sm sm:text-base">{{ $book->author }}</p>
                 @endif
 
-                {{-- Чья книга --}}
                 <p class="text-xs text-autumn-muted mt-2">
                     @if ($isOwner)
                         Ваша книга
@@ -61,7 +60,6 @@
             </div>
         @endif
 
-        {{-- Прогресс чтения — показываем всем, но данные владельца --}}
         @if ($book->total_pages)
             <div class="mt-6 sm:mt-8 bg-autumn-card border border-autumn-border rounded-xl p-5 sm:p-6">
                 <div class="flex items-end justify-between mb-3">
@@ -86,7 +84,6 @@
             </div>
         @endif
 
-        {{-- Закладка — только для владельца --}}
         @if ($isOwner)
             <div class="mt-6 bg-autumn-card border border-autumn-border rounded-xl p-5 sm:p-6">
                 <h2 class="text-lg font-serif font-bold text-autumn-ink mb-4">Поставить закладку</h2>
@@ -133,7 +130,6 @@
             </div>
         @endif
 
-        {{-- Публичные отзывы об этой книге видны всем --}}
         @php
             $visibleReviews = $book->reviews
                 ->filter(fn($r) => $r->visibility === 'public'

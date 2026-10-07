@@ -4,13 +4,13 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\UserProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -26,20 +26,6 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     // Breeze-профиль (редактирование своего)
-    // Список пользователей (должен быть ДО /users/{user}!)
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-
-    // Публичный профиль
-    Route::get('/users/{user}', [UserProfileController::class, 'show'])->name('user.profile');
-
-    // Подписчики и подписки
-    Route::get('/users/{user}/followers', [UserProfileController::class, 'followers'])->name('user.followers');
-    Route::get('/users/{user}/following', [UserProfileController::class, 'following'])->name('user.following');
-
-    // Подписки
-    Route::post('/users/{user}/follow', [FollowController::class, 'store'])->name('follow.store');
-    Route::delete('/users/{user}/follow', [FollowController::class, 'destroy'])->name('follow.destroy');
-    Route::delete('/users/{user}/unfriend', [FollowController::class, 'unfriend'])->name('follow.unfriend');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -49,12 +35,21 @@ Route::middleware('auth')->group(function () {
     Route::post('books/{book}/bookmark', [BookController::class, 'bookmark'])
         ->name('books.bookmark');
 
-    // Публичный профиль другого пользователя
-    Route::get('/users/{user}', [UserProfileController::class, 'show'])->name('user.profile');
+    // Мои друзья (важно: ВЫШЕ /users/{user}, иначе Laravel перепутает)
+    Route::get('/friends', [UserController::class, 'friends'])->name('users.friends');
+
+    // Список всех пользователей
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    // Публичный профиль и его подстраницы
+    Route::get('/users/{user}/books',     [UserProfileController::class, 'books'])->name('user.books');
+    Route::get('/users/{user}/followers', [UserProfileController::class, 'followers'])->name('user.followers');
+    Route::get('/users/{user}/following', [UserProfileController::class, 'following'])->name('user.following');
+    Route::get('/users/{user}',           [UserProfileController::class, 'show'])->name('user.profile');
 
     // Подписки
-    Route::post('/users/{user}/follow', [FollowController::class, 'store'])->name('follow.store');
-    Route::delete('/users/{user}/follow', [FollowController::class, 'destroy'])->name('follow.destroy');
+    Route::post('/users/{user}/follow',     [FollowController::class, 'store'])->name('follow.store');
+    Route::delete('/users/{user}/follow',   [FollowController::class, 'destroy'])->name('follow.destroy');
     Route::delete('/users/{user}/unfriend', [FollowController::class, 'unfriend'])->name('follow.unfriend');
 
     // Отзывы
@@ -73,14 +68,11 @@ Route::middleware('auth')->group(function () {
     // Лайки
     Route::post('/reviews/{review}/like', [LikeController::class, 'toggleReview'])->name('likes.review');
     Route::post('/comments/{comment}/like', [LikeController::class, 'toggleComment'])->name('likes.comment');
+
+    // Уведомления
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::get('/notifications/{id}/open', [NotificationController::class, 'open'])->name('notifications.open');
 });
-
-
-
-// ... уже существующие маршруты ...
-
-Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
-Route::get('/notifications/{id}/open', [NotificationController::class, 'open'])->name('notifications.open');
 
 require __DIR__ . '/auth.php';

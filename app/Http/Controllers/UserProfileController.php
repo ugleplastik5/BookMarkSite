@@ -39,6 +39,19 @@ class UserProfileController extends Controller
     }
 
     /**
+     * Книги пользователя.
+     */
+    public function books(User $user)
+    {
+        $books = $user->books()
+            ->withCount('reviews')
+            ->latest()
+            ->paginate(20);
+
+        return view('profile.books', compact('user', 'books'));
+    }
+
+    /**
      * Подписчики пользователя.
      */
     public function followers(User $user)

@@ -5,7 +5,7 @@
     <div class="max-w-3xl mx-auto">
 
         {{-- Шапка профиля --}}
-        <div class="bg-white border border-autumn-border rounded-xl p-5 sm:p-6">
+        <div class="bg-autumn-card border border-autumn-border rounded-xl p-5 sm:p-6">
 
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div class="min-w-0">
@@ -65,12 +65,21 @@
             </div>
 
             {{-- Статистика --}}
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-6 pt-6 border-t border-autumn-border">
-                <a href="{{ route('books.index') }}"
-                   class="text-center hover:bg-autumn-border/30 rounded-lg py-3 transition">
-                    <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $booksCount }}</div>
-                    <div class="text-xs text-autumn-muted mt-1">Книг</div>
-                </a>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mt-6 pt-6 border-t border-autumn-border">
+
+                @if (auth()->id() === $user->id)
+                    <a href="{{ route('books.index') }}"
+                       class="text-center hover:bg-autumn-border/30 rounded-lg py-3 transition">
+                        <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $booksCount }}</div>
+                        <div class="text-xs text-autumn-muted mt-1">Книг</div>
+                    </a>
+                @else
+                    <a href="{{ route('user.books', $user) }}"
+                       class="text-center hover:bg-autumn-border/30 rounded-lg py-3 transition">
+                        <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $booksCount }}</div>
+                        <div class="text-xs text-autumn-muted mt-1">Книг</div>
+                    </a>
+                @endif
 
                 <a href="#reviews"
                    class="text-center hover:bg-autumn-border/30 rounded-lg py-3 transition">
@@ -89,6 +98,23 @@
                     <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $followingCount }}</div>
                     <div class="text-xs text-autumn-muted mt-1">Подписок</div>
                 </a>
+
+                @php
+                    $friendsCount = count($user->friendIds());
+                @endphp
+
+                @if (auth()->id() === $user->id)
+                    <a href="{{ route('users.friends') }}"
+                       class="text-center hover:bg-autumn-border/30 rounded-lg py-3 transition">
+                        <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $friendsCount }}</div>
+                        <div class="text-xs text-autumn-muted mt-1">Друзей</div>
+                    </a>
+                @else
+                    <div class="text-center rounded-lg py-3">
+                        <div class="text-2xl font-serif font-bold text-autumn-ink">{{ $friendsCount }}</div>
+                        <div class="text-xs text-autumn-muted mt-1">Друзей</div>
+                    </div>
+                @endif
             </div>
 
         </div>
@@ -100,7 +126,7 @@
             </h2>
 
             @if ($reviews->isEmpty())
-                <div class="bg-white border border-autumn-border rounded-xl p-6 text-center text-autumn-muted text-sm">
+                <div class="bg-autumn-card border border-autumn-border rounded-xl p-6 text-center text-autumn-muted text-sm">
                     @if (auth()->id() === $user->id)
                         Вы ещё не написали ни одного отзыва.
                     @else
@@ -110,7 +136,7 @@
             @else
                 <div class="space-y-4">
                     @foreach ($reviews as $review)
-                        <article class="bg-white border border-autumn-border rounded-xl p-4 sm:p-5 hover:border-autumn-gold transition">
+                        <article class="bg-autumn-card border border-autumn-border rounded-xl p-4 sm:p-5 hover:border-autumn-gold transition">
 
                             <div class="flex items-start justify-between gap-3 mb-2">
                                 <a href="{{ route('books.show', $review->book) }}"
